@@ -12,26 +12,27 @@
 class Solution {
 public:
     bool hasPathSum(TreeNode* root, int targetSum) {
-        stack <TreeNode*> st;
+        stack <pair<TreeNode*,int>> st;
         int sum = 0;
 
         if(!root) return false;
 
-        st.push(root);
-        while(!st.empty()) {
-            TreeNode* Top = st.top();
-            st.pop();
-            sum += Top->val;
+        st.push({root, root->val});
 
-            if(sum > targetSum) {
-                sum -= Top->val;
-                continue;
-            } else if(sum < targetSum) { 
-                if(Top->right) st.push(Top->right);
-                if(Top->left) st.push(Top->left);
-            } else {
+
+        while(!st.empty()) {
+            auto [node, currentSum] = st.top();
+            st.pop();
+            
+            if(!node->left && !node->right && currentSum == targetSum) {
                 return true;
             } 
+            if(node->right) {
+                st.push({node->right, currentSum + node->right->val});
+            }
+            if(node->left) {
+                st.push({node->left, currentSum + node->left->val});
+            }
         }
         
         return false;
