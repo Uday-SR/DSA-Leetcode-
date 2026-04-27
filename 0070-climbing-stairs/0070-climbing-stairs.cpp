@@ -1,24 +1,16 @@
 class Solution {
 public:
-    long long nCr(int n, int r) {
-        if(r == 0 || r == n) return 1;
-        long long res = 1;
-        for(int i = 1; i <= r; i++) {
-            res = res * (n-i+1)/i;
-        }
-        return res;
-    }
-
     int climbStairs(int n) {
-        
-        int count = 0;
+        if(n==0 || n==1) return 1;
 
-        for(int i = 0; i <= n/2; i++) {
-            int temp = n-(i*2);
-            int totalSteps = temp + i;
-            count += nCr(totalSteps, i);
+        int prev = 1, curr = 1;
+
+        for(int i = 2; i <= n; i++ ) {
+            int temp = curr;
+            curr = prev + curr;
+            prev = temp;
         }
 
-        return count;
+        return curr;
     }
 };
